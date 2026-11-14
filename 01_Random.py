@@ -8,6 +8,7 @@ import shap
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.ensemble import RandomForestClassifier
 
@@ -145,6 +146,30 @@ print(
 
 print("ROC-AUC:", roc_auc_score(y_test, y_test_prob))
 print("Average Precision:", average_precision_score(y_test, y_test_prob))
+
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(7, 5))
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt='d',
+    cmap='Blues',
+    xticklabels=['No Stroke (0)', 'Stroke (1)'],
+    yticklabels=['No Stroke (0)', 'Stroke (1)'],
+    annot_kws={"size": 14}
+)
+
+plt.title(
+    f'Random Forest Confusion Matrix (Threshold = {selected_threshold})',
+    fontsize=14
+)
+plt.xlabel('Predicted Label', fontsize=12)
+plt.ylabel('Actual Label', fontsize=12)
+
+plt.tight_layout()
+plt.show()
 
 
 # %% Create SHAP Explainer
